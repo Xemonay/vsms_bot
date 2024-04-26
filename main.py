@@ -5,17 +5,17 @@ import sqlite3
 import datetime as dt
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG  # logging
 )
 logger = logging.getLogger(__name__)
 name = ''
 
 
-async def handler(update, context):
+async def handler(update, context):  # Любое сообщение кроме команд и нужного
     await update.message.reply_html('Very intresting position')
 
 
-async def start(update, context):
+async def start(update, context):  # /start func добавление в data base.
     print('\033[33mRunning start\033[0m')
     user = update.effective_user
     con = sqlite3.connect('data/people_acco.db')
@@ -33,7 +33,7 @@ async def start(update, context):
     con.close()
 
 
-async def check(update, context):
+async def check(update, context):  # проверка на наличие message
     print('\033[33mRunning check\033[0m')
     user = update.effective_user.username
     con = sqlite3.connect('data/people_acco.db')
@@ -53,13 +53,13 @@ async def check(update, context):
         await update.message.reply_html('You have no new messages')
 
 
-async def send(update, context):
+async def send(update, context):  # отправка сообщений
     print('\033[33mRunning send\033[0m')
     await update.message.reply_html("To: Pass name.\nSend /stop if you want to cancel action")
     return 1
 
 
-async def first_response(update, context):
+async def first_response(update, context):  # для отправки
     username = update.message.text
     con = sqlite3.connect('data/people_acco.db')
     c = con.cursor()
@@ -76,7 +76,7 @@ async def first_response(update, context):
     return 1
 
 
-async def second_response(update, context):
+async def second_response(update, context):  # для отправки
     global name
     message = update.message.text
     con = sqlite3.connect('data/people_acco.db')
@@ -93,17 +93,17 @@ async def second_response(update, context):
     return ConversationHandler.END
 
 
-async def stop(update, context):
+async def stop(update, context):  # stop func
     await update.message.reply_text("Stopping")
     return ConversationHandler.END
 
 
-async def creator(update, context):
+async def creator(update, context):  # creator
     print('\033[33mRunning creator\033[0m')
     await update.message.reply_html('<a href="tg://user?id=1027803322">Xemonay</a>')
 
 
-def main():
+def main():  # связь с классами
     application = Application.builder().token(BOT_TOKEN).build()
     text_handler = MessageHandler(filters.TEXT, handler)
     application.add_handler(CommandHandler("start", start))
@@ -125,5 +125,5 @@ def main():
     print('\033[43mthe End of the bot\033[0m')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # beautiful
     main()
